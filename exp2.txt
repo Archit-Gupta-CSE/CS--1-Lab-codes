@@ -1,30 +1,37 @@
-% Number of dice
-numDice = 50;
-% Number of dice rolls
-numRolls = 10000;
+%Rolling N dice
 
-% Simulate rolling 'numDice' dice and calculate the sum
-diceSum = randi([1, 2], numRolls, numDice);
-sumValues = sum(diceSum, 2);
-
-% Calculate the probability distribution
-numOutcomes = numDice * 2; % Possible outcomes for 'numDice' dice
-probDistribution = histcounts(sumValues, numDice:numOutcomes + 1) / numRolls;
-
-% Plotting
-bar(numDice:numOutcomes, probDistribution);
-title(['Probability Distribution of Sum of ' num2str(numDice) ' Coins']);
-xlabel('Possible Sum Outcomes');
+central_limit_theorem(2, 10000);
+function central_limit_theorem(N, num_trials)
+% Simulate rolling N fair dice num_trials times
+rolls = zeros(num_trials, N);
+for i = 1:num_trials
+% Roll N fair dice
+rolls(i, :) = randi([1, 6], 1, N);
+end
+% Calculate the sum of each set of N dice rolls
+sums = sum(rolls, 2);
+% Plot the histogram
+figure;
+histogram(sums, 'Normalization', 'probability', 'BinWidth', 1, 'EdgeColor', 'w');
+% Set plot labels and title
+title(sprintf('Central Limit Theorem for Rolling %d Fair Dice %d times', N, num_trials));
+xlabel('Sum of Dice Rolls');
 ylabel('Probability');
+end
 
+%Tossing N Coins
 
-numdice=50;
-numrolls=10000;
-dicesum=randi([1,6],numrolls,numdice);
-sumvalues=sum(dicesum,2);
-numoutcomes=6*numdice;
-prob=histcounts(sumvalues,numdice:numoutcomes+1)/numrolls;
-bar(numdice:numoutcomes,prob)
-title("Central limit theorem for 2 dice");
-ylabel("probability")
-xlabel('Possible outcomes')
+central_limit_theorem_coins(100, 10000);
+function central_limit_theorem_coins(N, num_tosses)
+% Simulate tossing N fair coins num_tosses times
+tosses = randi([0, 1], num_tosses, N); % 0 represents tails, 1 represents heads
+% Calculate the sum of each set of N coin tosses
+sums = sum(tosses, 2);
+% Plot the histogram
+figure;
+histogram(sums, 'Normalization', 'probability', 'BinWidth', 1, 'EdgeColor', 'w');
+% Set plot labels and title
+title(sprintf('Central Limit Theorem for Tossing %d Fair Coins %d times', N, num_tosses));
+xlabel('Heads');
+ylabel('Probability');
+end
